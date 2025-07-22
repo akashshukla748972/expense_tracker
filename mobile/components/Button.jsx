@@ -5,9 +5,9 @@ import Loading from "./Loading";
 const Button = ({ onPress, loading = false, children }) => {
   if (loading) {
     return (
-      <View style={[styles.button, { backgroundColor: "transparent" }]}>
+      <View style={{ backgroundColor: "#a3e635" }} className="p-6 rounded-xl">
         {/* loading */}
-        <Loading />
+        <Loading color="#fff" />
       </View>
     );
   }
