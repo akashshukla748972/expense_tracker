@@ -3,14 +3,19 @@ import React from "react";
 import Button from "../../components/Button";
 import ScreenWrapper from "../../components/ScreenWrapper";
 import Animated, { FadeIn, FadeInDown } from "react-native-reanimated";
+import { useRouter } from "expo-router";
 
 const Welcome = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper>
       <View className="flex-1 justify-between">
         {/* login button */}
         <View>
-          <TouchableOpacity className="self-end mr-4">
+          <TouchableOpacity
+            onPress={() => router.push("/login")}
+            className="self-end mr-4"
+          >
             <Text className="text-white text-xl font-semibold opacity-80">
               Sign In
             </Text>
@@ -71,7 +76,7 @@ const Welcome = () => {
               .damping(12)}
             className="w-[100%] px-[20px]"
           >
-            <Button loading={false}>
+            <Button onPress={() => router.push("/register")} loading={false}>
               <Text className="text-[#fff] font-semibold text-xl">
                 Get Started
               </Text>
