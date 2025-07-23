@@ -5,8 +5,6 @@ import CustomError from "../../utils/CustomError.js";
 import { genToken } from "../../services/token.js";
 import bcrypt from "bcrypt";
 
-import bcrypt from "bcrypt";
-
 export const handleRegisterUser = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
