@@ -1,15 +1,16 @@
+// RootLayout.jsx
 import { Stack } from "expo-router";
 import "../global.css";
 import { AuthProvider } from "../contexts/authContext";
-
-const StackLayout = () => {
-  return <Stack screenOptions={{ headerShown: false }}></Stack>;
-};
+import { AuthLoader } from "../components/AuthLoader";
+import { View, ActivityIndicator } from "react-native";
 
 export default function RootLayout() {
   return (
     <AuthProvider>
-      <StackLayout />
+      <AuthLoader>
+        <Stack screenOptions={{ headerShown: false }} />
+      </AuthLoader>
     </AuthProvider>
   );
 }

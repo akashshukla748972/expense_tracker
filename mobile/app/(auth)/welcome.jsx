@@ -5,19 +5,14 @@ import ScreenWrapper from "../../components/ScreenWrapper";
 import Animated, { FadeIn, FadeInDown } from "react-native-reanimated";
 import { useRouter } from "expo-router";
 import { useEffect } from "react";
-import * as SecureStore from "expo-secure-store";
-import { useState } from "react";
 
 const Welcome = () => {
-  const [token, setToken] = useState(null);
   const router = useRouter();
-  useEffect(() => {
-    (async () => {
-      const userToken = await SecureStore.getItemAsync("token");
-      setToken(userToken);
-    })();
-  }, []);
-  console.log("token->", token);
+  useEffect(() => {}, []);
+
+  if (token) {
+    router.replace("/(auth)");
+  }
   return (
     <ScreenWrapper>
       <View className="flex-1 justify-between">
