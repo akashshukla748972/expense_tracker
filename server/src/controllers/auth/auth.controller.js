@@ -63,7 +63,7 @@ export const handleLoginUser = async (req, res, next) => {
     };
     const { token } = await genToken(payload);
 
-    return res.status(201).json({
+    return res.status(200).json({
       message: "User logged in successfully.",
       token,
       data: user,
