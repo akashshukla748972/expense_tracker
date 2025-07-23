@@ -29,18 +29,12 @@ const Register = () => {
     setLoading(true);
     try {
       const res = await registerUser(values);
-      console.log("->", res);
-      if (
-        !res?.isSuccess &&
-        res?.message == "Request failed with status code 409"
-      ) {
-        Alert.alert("Error", "Email already exist please login.");
-        router.push("/login");
-      } else {
+      if (!res?.isSuccess) {
+        Alert.alert("1 Error", res?.message);
       }
     } catch (error) {
       Alert.alert(
-        "Error",
+        "Server Error",
         error?.message || "Error while registering new user."
       );
     } finally {

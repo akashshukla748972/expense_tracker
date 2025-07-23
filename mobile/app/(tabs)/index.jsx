@@ -10,7 +10,7 @@ const Index = () => {
 
   const logout = async () => {
     await SecureStore.deleteItemAsync("token");
-    router.replace("/login");
+    router.replace("/(auth)/welcome");
   };
 
   useEffect(() => {

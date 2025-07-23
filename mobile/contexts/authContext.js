@@ -19,13 +19,20 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const loadUserFromStorage = async () => {
-      const token = await SecureStore.getItemAsync("token");
-      console.log("token->", token);
-      if (token) {
-        setUser({ name: "Akash Shukla" });
+      try {
+        const token = await SecureStore.getItemAsync("token");
+        const userData = await SecureStore.getItemAsync("user");
+
+        if (token && userData) {
+          setUser(JSON.parse(userData));
+        }
+      } catch (error) {
+        console.error("Error loading user from storage", error);
+      } finally {
+        setAuthLoading(false);
       }
-      setAuthLoading(false);
     };
+
     loadUserFromStorage();
   }, []);
 
@@ -35,20 +42,84 @@ export const AuthProvider = ({ children }) => {
         "https://expense-tracker-2s7v.onrender.com/api/auth/register",
         formData
       );
-      setUser({ name: "Akash Shukla" });
-      await SecureStore.setItemAsync("token", res.data?.token);
+
+      const userData = res.data?.data;
+      const token = res.data?.token;
+
+      setUser(userData);
+      await SecureStore.setItemAsync("user", JSON.stringify(userData));
+      await SecureStore.setItemAsync("token", token);
+
       router.replace("/(tabs)");
+      return {
+        isSuccess: true,
+        message: "Login successful",
+      };
     } catch (error) {
+      let err = "Something went wrong";
+
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 400) {
+          err = "Invalid details provided.";
+        } else if (error.response?.status === 500) {
+          err = "Server error. Try again later.";
+        }
+      }
+
       return {
         isSuccess: false,
-        message: error.message,
+        message: err,
       };
     }
   };
 
-  const loginUser = (formData) => {};
+  const loginUser = async (formData) => {
+    try {
+      const res = await axios.post(
+        "https://expense-tracker-2s7v.onrender.com/api/auth/login",
+        formData
+      );
 
-  const updateUser = (formData) => {};
+      const userData = res.data?.data;
+      const token = res.data?.token;
+
+      setUser(userData);
+      await SecureStore.setItemAsync("user", JSON.stringify(userData));
+      await SecureStore.setItemAsync("token", token);
+
+      router.replace("/(tabs)");
+      return {
+        isSuccess: true,
+        message: "Login successful",
+      };
+    } catch (error) {
+      let err = "Something went wrong";
+
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 400) {
+          err = "Invalid username or password.";
+        } else if (error.response?.status === 500) {
+          err = "Server error. Try again later.";
+        }
+      }
+
+      return {
+        isSuccess: false,
+        message: err,
+      };
+    }
+  };
+
+  const logoutUser = async () => {
+    await SecureStore.deleteItemAsync("user");
+    await SecureStore.deleteItemAsync("token");
+    setUser(null);
+    router.replace("/(auth)/welcome");
+  };
+
+  const updateUser = (formData) => {
+    // Future implementation
+  };
 
   return (
     <AuthContext.Provider
@@ -59,6 +130,7 @@ export const AuthProvider = ({ children }) => {
         setAuthLoading,
         registerUser,
         loginUser,
+        logoutUser,
         updateUser,
       }}
     >
