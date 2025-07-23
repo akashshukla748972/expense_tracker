@@ -14,14 +14,30 @@ import { LoginSchema } from "../../utils/validation/LoginSchema";
 import { AntDesign, Entypo, Fontisto, Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { useRouter } from "expo-router";
+import { useAuth } from "../../contexts/authContext";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { loginUser } = useAuth();
 
-  const handleLogin = (values) => {
-    Alert.alert("Success", values.email);
+  const handleLogin = async (values) => {
+    setLoading(true);
+    try {
+      const res = await loginUser(values);
+
+      if (!res?.isSuccess) {
+        Alert.alert("1 Error", res?.message);
+      }
+    } catch (error) {
+      Alert.alert(
+        "Server Error",
+        error?.message || "Error while registering new user."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <ScreenWrapper>

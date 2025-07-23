@@ -8,11 +8,6 @@ import { useEffect } from "react";
 
 const Welcome = () => {
   const router = useRouter();
-  useEffect(() => {}, []);
-
-  if (token) {
-    router.replace("/(auth)");
-  }
   return (
     <ScreenWrapper>
       <View className="flex-1 justify-between">
