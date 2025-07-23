@@ -80,37 +80,3 @@ export const handleLoginUser = async (req, res, next) => {
     });
   }
 };
-
-export const handleLoginUser = async (req, res, next) => {
-  try {
-    const { email, password } = req.body;
-
-    const isExistEmail = await userModel.findOne({ email });
-    const isMatched = await bcrypt.compare(password, isExistEmail.password);
-
-    if (!isExistEmail || !isMatched) {
-      return next(new CustomError("Invalid email or password", 400));
-    }
-
-    const user = await userModel.findById(isExistEmail._id).select("-password");
-    const payload = {
-      id: user?._id,
-      email: user?.email,
-    };
-    const { token } = await genToken(payload);
-
-    return res.status(201).json({
-      message: "User logged in successfully.",
-      token,
-      data: user,
-      isSucces: true,
-    });
-  } catch (error) {
-    console.error(error);
-
-    return res.status(500).json({
-      message: "Internal server error.",
-      isSucces: false,
-    });
-  }
-};
