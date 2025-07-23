@@ -1,5 +1,7 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
+import * as SecureStore from "expo-secure-store";
+import { router } from "expo-router";
 
 export const AuthContext = createContext();
 
@@ -13,6 +15,19 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
+
+  useEffect(() => {
+    const loadUserFromStorage = async () => {
+      const token = await SecureStore.getItemAsync("token");
+      console.log("token->", token);
+      if (token) {
+        setUser({ name: "Akash Shukla" });
+      }
+      setAuthLoading(false);
+    };
+    loadUserFromStorage();
+  }, []);
 
   const registerUser = async (formData) => {
     try {
@@ -20,15 +35,12 @@ export const AuthProvider = ({ children }) => {
         "https://expense-tracker-2s7v.onrender.com/api/auth/register",
         formData
       );
-      return {
-        token: res.data?.token,
-        isSuccesss: true,
-        message: "User registered successfully.",
-      };
+      setUser({ name: "Akash Shukla" });
+      await SecureStore.setItemAsync("token", res.data?.token);
+      router.replace("/(tabs)");
     } catch (error) {
-      console.error(error);
       return {
-        isSuccesss: false,
+        isSuccess: false,
         message: error.message,
       };
     }
@@ -40,7 +52,15 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, setUser, registerUser, loginUser, updateUser }}
+      value={{
+        user,
+        setUser,
+        authLoading,
+        setAuthLoading,
+        registerUser,
+        loginUser,
+        updateUser,
+      }}
     >
       {children}
     </AuthContext.Provider>

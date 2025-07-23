@@ -1,16 +1,30 @@
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Image, StyleSheet } from "react-native";
 import React, { useEffect } from "react";
 import { useRouter } from "expo-router";
+import { useAuth } from "@/contexts/authContext";
 
 const index = () => {
   const router = useRouter();
+  const { user, authLoading } = useAuth();
 
   useEffect(() => {
-    const navigateWlc = setTimeout(() => {
-      router.push("/(auth)/welcome");
+    if (authLoading) return;
+
+    const navigate = setTimeout(() => {
+      if (user) {
+        router.replace("/(tabs)");
+      } else {
+        router.replace("/(auth)/welcome");
+      }
     }, 2000);
-    return () => clearTimeout(navigateWlc);
-  }, []);
+
+    return () => clearTimeout(navigate);
+  }, [user, authLoading]);
+
+  useEffect(() => {
+    console.log("Auth loading:", authLoading);
+  }, [authLoading]);
+
   return (
     <View className="flex-1 justify-center items-center bg-[#171717]">
       <Image

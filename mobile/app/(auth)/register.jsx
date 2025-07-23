@@ -28,21 +28,20 @@ const Register = () => {
   const handleRegister = async (values) => {
     setLoading(true);
     try {
-      const { isSuccess, message } = await registerUser(values);
-      if (isSuccess) {
-        Alert.alert("Success", message);
-        await SecureStore.setItemAsync("token", res.data?.token);
-        router.push("/welcome");
-      } else if (
-        !isSuccess &&
-        message == "Request failed with status code 409"
+      const res = await registerUser(values);
+      console.log("->", res);
+      if (
+        !res?.isSuccess &&
+        res?.message == "Request failed with status code 409"
       ) {
         Alert.alert("Error", "Email already exist please login.");
+        router.push("/login");
+      } else {
       }
     } catch (error) {
       Alert.alert(
         "Error",
-        error.message || "Error while registering new user."
+        error?.message || "Error while registering new user."
       );
     } finally {
       setLoading(false);
