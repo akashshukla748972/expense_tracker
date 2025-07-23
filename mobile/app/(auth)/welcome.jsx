@@ -4,9 +4,15 @@ import Button from "../../components/Button";
 import ScreenWrapper from "../../components/ScreenWrapper";
 import Animated, { FadeIn, FadeInDown } from "react-native-reanimated";
 import { useRouter } from "expo-router";
+import { useEffect } from "react";
 
 const Welcome = () => {
   const router = useRouter();
+  useEffect(() => {}, []);
+
+  if (token) {
+    router.replace("/(auth)");
+  }
   return (
     <ScreenWrapper>
       <View className="flex-1 justify-between">

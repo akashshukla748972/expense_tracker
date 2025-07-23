@@ -15,14 +15,37 @@ import { AntDesign, Entypo, Fontisto, Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { useRouter } from "expo-router";
 import { RegisterSchema } from "../../utils/validation/RegisterSchema";
+import axios from "axios";
+import * as SecureStore from "expo-secure-store";
+import { useAuth } from "../../contexts/authContext";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { registerUser } = useAuth();
 
-  const handleRegister = (values) => {
-    Alert.alert("Success", values.email + values.name);
+  const handleRegister = async (values) => {
+    setLoading(true);
+    try {
+      const res = await registerUser(values);
+      console.log("->", res);
+      if (
+        !res?.isSuccess &&
+        res?.message == "Request failed with status code 409"
+      ) {
+        Alert.alert("Error", "Email already exist please login.");
+        router.push("/login");
+      } else {
+      }
+    } catch (error) {
+      Alert.alert(
+        "Error",
+        error?.message || "Error while registering new user."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <ScreenWrapper>
