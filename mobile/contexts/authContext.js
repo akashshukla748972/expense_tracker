@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 import { router } from "expo-router";
+import { uploadFileToCloudinary } from "../services/imageService";
 
 export const AuthContext = createContext();
 
@@ -39,7 +40,7 @@ export const AuthProvider = ({ children }) => {
   const registerUser = async (formData) => {
     try {
       const res = await axios.post(
-        "https://expense-tracker-2s7v.onrender.com/api/auth/register",
+        "https://expense-tracker-x1po.onrender.com/api/auth/register",
         formData
       );
 
@@ -76,7 +77,7 @@ export const AuthProvider = ({ children }) => {
   const loginUser = async (formData) => {
     try {
       const res = await axios.post(
-        "https://expense-tracker-2s7v.onrender.com/api/auth/login",
+        "https://expense-tracker-x1po.onrender.com/api/auth/login",
         formData
       );
 
@@ -117,8 +118,46 @@ export const AuthProvider = ({ children }) => {
     router.replace("/(auth)/welcome");
   };
 
-  const updateUser = (formData) => {
-    // Future implementation
+  const updateUser = async (formData, user_id) => {
+    try {
+      const token = await SecureStore.getItemAsync("token");
+
+      if (typeof formData.image == "object") {
+        const response = await uploadFileToCloudinary(
+          formData.image,
+          "expense_tracker/user/"
+        );
+
+        delete formData.image;
+        formData.avatar = {
+          public_id: response?.avatar.public_id,
+          url: response?.avatar?.url,
+        };
+      }
+
+      if (!typeof formData.image == "object") {
+        delete formData.image;
+      }
+      const res = await axios.put(
+        `https://expense-tracker-x1po.onrender.com/api/user/update/${user_id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const userData = res.data?.data;
+      setUser(userData);
+      await SecureStore.setItemAsync("user", JSON.stringify(userData));
+
+      router.back();
+      return;
+    } catch (error) {
+      console.log(error);
+      console.log(axios.isAxiosError(error));
+    }
   };
 
   return (

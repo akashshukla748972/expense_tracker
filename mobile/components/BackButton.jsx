@@ -9,7 +9,7 @@ const BackButton = ({ style, iconSize = 26 }) => {
       onPress={() => router.back()}
       style={[styles.button, style]}
     >
-      <CaretLeft size={32} color="white" weight="bold" />
+      <CaretLeft size={24} color="white" weight="bold" />
     </TouchableOpacity>
   );
 };

@@ -5,11 +5,23 @@ import { AuthProvider } from "../contexts/authContext";
 import { AuthLoader } from "../components/AuthLoader";
 import { View, ActivityIndicator } from "react-native";
 
+const StackLayout = () => {
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="index" />
+      <Stack.Screen
+        name="(models)/profileModel"
+        options={{ presentation: "modal" }}
+      />
+    </Stack>
+  );
+};
+
 export default function RootLayout() {
   return (
     <AuthProvider>
       <AuthLoader>
-        <Stack screenOptions={{ headerShown: false }} />
+        <StackLayout />
       </AuthLoader>
     </AuthProvider>
   );

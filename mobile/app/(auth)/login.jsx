@@ -28,7 +28,7 @@ const Login = () => {
       const res = await loginUser(values);
 
       if (!res?.isSuccess) {
-        Alert.alert("1 Error", res?.message);
+        Alert.alert("Error", res?.message);
       }
     } catch (error) {
       Alert.alert(
