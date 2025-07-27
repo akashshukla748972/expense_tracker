@@ -1,20 +1,16 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useRouter } from "expo-router";
-import { CaretLeft } from "phosphor-react-native";
+import { Trash } from "phosphor-react-native";
 
-const BackButton = ({ style, iconSize = 26 }) => {
-  const router = useRouter();
+const DeleteButton = ({ style, iconSize = 26, onDelete }) => {
   return (
-    <TouchableOpacity
-      onPress={() => router.back()}
-      style={[styles.button, style]}
-    >
-      <CaretLeft size={24} color="white" weight="bold" />
+    <TouchableOpacity onPress={onDelete} style={[styles.button, style]}>
+      <Trash size={24} color="#ef4444" weight="bold" />
     </TouchableOpacity>
   );
 };
 
-export default BackButton;
+export default DeleteButton;
 
 const styles = StyleSheet.create({
   button: {

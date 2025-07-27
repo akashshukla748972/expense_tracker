@@ -5,14 +5,21 @@ import Loading from "./Loading";
 const Button = ({ onPress, loading = false, children }) => {
   if (loading) {
     return (
-      <View style={{ backgroundColor: "#a3e635" }} className="p-6 rounded-xl">
+      <View
+        style={{ backgroundColor: "#a3e635", width: "100%" }}
+        className="p-7 rounded-xl"
+      >
         {/* loading */}
         <Loading color="#fff" />
       </View>
     );
   }
   return (
-    <TouchableOpacity onPress={onPress} style={styles.button}>
+    <TouchableOpacity
+      onPress={onPress}
+      style={styles.button}
+      className="p-5 text-xl font-semibold"
+    >
       {children}
     </TouchableOpacity>
   );
@@ -22,10 +29,10 @@ export default Button;
 
 const styles = StyleSheet.create({
   button: {
+    width: "100%",
     backgroundColor: "#a3e635",
     borderRadius: 10,
     borderCurve: "continuous",
-    paddingVertical: 10,
     justifyContent: "center",
     alignItems: "center",
   },

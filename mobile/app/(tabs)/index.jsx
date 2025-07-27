@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { useAuth } from "../../contexts/authContext";
 import { useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
+import ScreenWrapper from "../../components/ScreenWrapper";
 
 const Index = () => {
   const router = useRouter();
@@ -17,10 +18,10 @@ const Index = () => {
     if (!user) router.replace("/login");
   }, [user]);
   return (
-    <>
+    <ScreenWrapper>
       <Text>Welcome {user?.name}</Text>
       <Button title="Logout" onPress={logout} />
-    </>
+    </ScreenWrapper>
   );
 };
 

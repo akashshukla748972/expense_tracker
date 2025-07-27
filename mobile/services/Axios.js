@@ -2,11 +2,12 @@ import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 
 export const Axios = axios.create({
-  baseURL: "https://expense-tracker-2s7v.onrender.com/api",
+  baseURL: "https://expense-tracker-x1po.onrender.com/api",
 });
 
-api.interceptors.request.use(async (config) => {
-  const token = await SecureStore.getItemAsync("authToken");
+Axios.interceptors.request.use(async (config) => {
+  const token = await SecureStore.getItemAsync("token");
   if (token) config.headers.Authorization = `Bearer ${token}`;
+  console.log(config);
   return config;
 });
