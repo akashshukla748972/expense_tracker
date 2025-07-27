@@ -43,5 +43,11 @@ export const uploadFileToCloudinary = async (file, folderName) => {
 
 export const getProfileImage = (file) => {
   if (file && typeof file == "string") return file;
-  if (File && typeof file == "object") return file.url;
+  if (File && typeof file == "object") return file.uri;
+};
+
+export const getFilePath = (file) => {
+  if (file && typeof file == "string") return file;
+  if (File && typeof file == "object") return file.uri;
+  return null;
 };

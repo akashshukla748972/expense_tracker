@@ -1,5 +1,4 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
 
 const ModelWrapper = ({ style, children, bg = "bg-[#262626]" }) => {
   return (

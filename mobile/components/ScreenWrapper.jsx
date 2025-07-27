@@ -4,7 +4,7 @@ import { StatusBar } from "react-native";
 
 const { height } = Dimensions.get("window");
 
-const ScreenWrapper = ({ style, children }) => {
+const ScreenWrapper = ({ style = "bg-[#171717]", children }) => {
   const paddingTop = Platform.OS == "android" ? 50 : height * 0.06;
   return (
     <View
@@ -13,7 +13,7 @@ const ScreenWrapper = ({ style, children }) => {
           paddingTop,
         },
       ]}
-      className="flex-1 bg-[#171717]"
+      className={`flex-1 ${style}`}
     >
       <StatusBar barStyle={"light"} />
       {children}

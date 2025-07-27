@@ -4,6 +4,7 @@ import "../global.css";
 import { AuthProvider } from "../contexts/authContext";
 import { AuthLoader } from "../components/AuthLoader";
 import { View, ActivityIndicator } from "react-native";
+import { WalletProvider } from "../contexts/walletContext";
 
 const StackLayout = () => {
   return (
@@ -13,6 +14,10 @@ const StackLayout = () => {
         name="(models)/profileModel"
         options={{ presentation: "modal" }}
       />
+      <Stack.Screen
+        name="(models)/walletModel"
+        options={{ presentation: "modal" }}
+      />
     </Stack>
   );
 };
@@ -20,9 +25,11 @@ const StackLayout = () => {
 export default function RootLayout() {
   return (
     <AuthProvider>
-      <AuthLoader>
-        <StackLayout />
-      </AuthLoader>
+      <WalletProvider>
+        <AuthLoader>
+          <StackLayout />
+        </AuthLoader>
+      </WalletProvider>
     </AuthProvider>
   );
 }

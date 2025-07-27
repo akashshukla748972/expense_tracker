@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 
-const Header = ({ title = "", leftIcon, style }) => {
+const Header = ({ title = "", leftIcon, deleteIcon, style }) => {
   return (
     <View className={`w-[100%] flex flex-row items-center ${style}`}>
       {leftIcon && <View className={`self-start ${style}`}>{leftIcon}</View>}
@@ -13,6 +13,7 @@ const Header = ({ title = "", leftIcon, style }) => {
           {title}
         </Text>
       )}
+      {deleteIcon && <View className={`self-end ${style}`}>{deleteIcon}</View>}
     </View>
   );
 };
