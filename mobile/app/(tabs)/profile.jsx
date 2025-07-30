@@ -5,8 +5,9 @@ import {
   Image,
   TouchableOpacity,
   Alert,
+  Modal,
 } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ScreenWrapper from "../../components/ScreenWrapper";
 import Header from "../../components/Header";
 import BackButton from "../../components/BackButton";
@@ -15,10 +16,12 @@ import { getProfileImage } from "../../services/imageService";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import * as Icon from "phosphor-react-native";
 import { useRouter } from "expo-router";
+import * as Icons from "phosphor-react-native";
 
 const Profile = () => {
   const { user, logoutUser } = useAuth();
   const router = useRouter();
+  const [visibleImage, setVisibleImage] = useState(false);
 
   const accountOptions = [
     {
@@ -80,7 +83,10 @@ const Profile = () => {
         {/* user info */}
         <View className="mt-[30px] items-center gap-2">
           {/* avatar */}
-          <View className="mt-[30px] items-center gap-y-4">
+          <TouchableOpacity
+            onPress={() => setVisibleImage(true)}
+            className="mt-[30px] items-center gap-y-4"
+          >
             {/* user iamge */}
             <Animated.Image
               entering={FadeInDown.duration(1000)
@@ -97,7 +103,7 @@ const Profile = () => {
               className="self-center bg-[#d4d4d4] h-[135px] w-[135px] rounded-[200px]"
               resizeMode="cover"
             />
-          </View>
+          </TouchableOpacity>
           {/* name & email */}
           <View className="gap-y-1 items-center">
             <Text className="text-[24px] font-[600] text-[#f5f5f5]">
@@ -142,6 +148,49 @@ const Profile = () => {
           ))}
         </View>
       </View>
+
+      <Modal
+        visible={visibleImage}
+        transparent={true}
+        animationType="slide"
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          margin: 0,
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+        }}
+      >
+        <View className="flex-1 bg-[#00000080] justify-center">
+          <View className="bg-[#474747] w-full relative rounded-l-lg rounded-r-lg ">
+            <View className="absolute right-2 -top-10 w-10 h-10 bg-[#474747] rounded-full flex justify-center items-center">
+              <Icons.X
+                onPress={() => setVisibleImage(false)}
+                name="close-sharp"
+                size={24}
+                color="#f49b33"
+              />
+            </View>
+            <View>
+              <Image
+                entering={FadeInDown.duration(1000)
+                  .delay(100)
+                  .springify()
+                  .damping(12)}
+                source={
+                  user?.avatar?.url
+                    ? {
+                        uri: getProfileImage(user?.avatar?.url),
+                      }
+                    : require("../../assets/images/defaultAvatar.png")
+                }
+                className="self-center bg-[#d4d4d4] h-[400px] w-full rounded-md"
+                resizeMode="cover"
+              />
+            </View>
+          </View>
+        </View>
+      </Modal>
     </ScreenWrapper>
   );
 };

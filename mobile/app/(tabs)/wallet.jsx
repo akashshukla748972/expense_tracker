@@ -28,8 +28,8 @@ const Wallet = () => {
         {/* balance view */}
         <View className="h-[160px] bg-black justify-center items-center">
           <View className="items-center">
-            <Text className="text-[#ccc] font-semibold text-[45px]">
-              ${getTotalBalance().toFixed(2)}
+            <Text className="text-[#ccc] font-semibold text-[35px]">
+              Rs.{getTotalBalance().toFixed(2)}
             </Text>
             <Text className="text[16px] text-[#ccc] opacity-70">
               Total Balance

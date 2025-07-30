@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Expense Tracker",
-    "slug": "expense tracker",
+    "slug": "expense-tracker",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -12,6 +12,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.expense.expenseapp",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -38,6 +39,13 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "0407cbf3-5588-4bad-8216-872f93f2f07c"
+      }
+    },
+    "owner": "shuklaakash748972"
   }
 }

@@ -2,7 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import Loading from "./Loading";
 
-const Button = ({ onPress, loading = false, children }) => {
+const Button = ({ onPress, loading = false, children, styleSheet }) => {
   if (loading) {
     return (
       <View
@@ -17,8 +17,7 @@ const Button = ({ onPress, loading = false, children }) => {
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={styles.button}
-      className="p-5 text-xl font-semibold"
+      className={`w-full bg-[#a3e635] rounded-lg justify-center items-center p-[15px] ${styleSheet}`}
     >
       {children}
     </TouchableOpacity>
